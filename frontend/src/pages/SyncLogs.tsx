@@ -8,7 +8,6 @@ import {
   TableContainer,
   TableHead,
   TableRow,
-  Chip,
 } from '@mui/material';
 
 function SyncLogs() {
