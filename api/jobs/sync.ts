@@ -1,7 +1,7 @@
 import { VercelRequest, VercelResponse } from '@vercel/node';
 import { MongoClient } from 'mongodb';
-import { WorkizService } from '../../src/services/workiz/workizService';
-import { SheetsService } from '../../src/services/sheets/sheetsService';
+import { WorkizService } from '../services/workiz/workizService';
+import { SheetsService } from '../services/sheets/sheetsService';
 
 export default async function handler(req: VercelRequest, res: VercelResponse) {
   if (req.method !== 'POST' && req.method !== 'GET') {
