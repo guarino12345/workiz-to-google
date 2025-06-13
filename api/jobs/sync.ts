@@ -1,5 +1,7 @@
 import { VercelRequest, VercelResponse } from '@vercel/node';
 import { MongoClient } from 'mongodb';
+import { WorkizService } from '../../src/services/workiz/workizService';
+import { SheetsService } from '../../src/services/sheets/sheetsService';
 
 export default async function handler(req: VercelRequest, res: VercelResponse) {
   if (req.method !== 'POST' && req.method !== 'GET') {
@@ -15,9 +17,32 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
     
     // Process each account
     for (const account of accounts) {
-      // TODO: Implement Workiz API integration
-      // TODO: Implement Google Sheets integration
-      console.log(`Processing account: ${account.accountId}`);
+      const workizService = new WorkizService(account.workizApiKey);
+      const sheetsService = new SheetsService(
+        JSON.parse(process.env.GOOGLE_SHEETS_CREDENTIALS!),
+        account.googleSheetsId
+      );
+
+      // Get jobs from the last 14 days
+      const startDate = new Date(Date.now() - 14 * 24 * 60 * 60 * 1000).toISOString().split('T')[0];
+      const jobs = await workizService.getAllJobs(startDate);
+      
+      // Filter jobs by source if specified
+      const filteredJobs = account.sources 
+        ? jobs.filter(job => account.sources.includes(job.JobSource))
+        : jobs;
+
+      // Clear existing data and append new jobs
+      await sheetsService.clearSheet();
+      await sheetsService.appendJobs(filteredJobs);
+
+      // Log the sync
+      await db.collection('sync_logs').insertOne({
+        accountId: account.accountId,
+        timestamp: new Date(),
+        jobsProcessed: filteredJobs.length,
+        status: 'success'
+      });
     }
 
     await client.close();
