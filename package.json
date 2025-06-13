@@ -1,25 +1,30 @@
 {
   "name": "workiz-google-sync",
   "version": "1.0.0",
-  "private": true,
+  "description": "Sync Workiz jobs with Google Calendar",
+  "main": "dist/index.js",
   "scripts": {
-    "build": "tsc"
-  },
-  "dependencies": {
-    "axios": "^1.9.0",
-    "express": "^4.18.2",
-    "googleapis": "^129.0.0"
-  },
-  "devDependencies": {
-    "@types/axios": "^0.14.0",
-    "@types/express": "^4.17.21",
-    "@types/mongodb": "^4.0.7",
-    "@types/node": "^20.19.0",
-    "@vercel/node": "^5.2.2",
-    "mongodb": "^6.17.0",
-    "typescript": "^5.0.0"
+    "build": "tsc",
+    "start": "node dist/index.js",
+    "dev": "ts-node src/index.ts"
   },
   "engines": {
     "node": ">=14.0.0"
+  },
+  "dependencies": {
+    "@google-cloud/local-auth": "^2.1.0",
+    "axios": "^1.6.7",
+    "cors": "^2.8.5",
+    "dotenv": "^16.4.5",
+    "express": "^4.18.3",
+    "googleapis": "^133.0.0",
+    "mongoose": "^8.2.1"
+  },
+  "devDependencies": {
+    "@types/cors": "^2.8.17",
+    "@types/express": "^4.17.21",
+    "@types/node": "^20.11.24",
+    "ts-node": "^10.9.2",
+    "typescript": "^5.0.0"
   }
 }
