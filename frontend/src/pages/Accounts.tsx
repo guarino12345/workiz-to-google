@@ -16,7 +16,14 @@ import {
   DialogTitle,
   DialogContent,
   DialogActions,
-  Chip
+  Chip,
+  Paper,
+  Table,
+  TableBody,
+  TableCell,
+  TableContainer,
+  TableHead,
+  TableRow
 } from '@mui/material';
 import { Add as AddIcon, Delete as DeleteIcon, Edit as EditIcon } from '@mui/icons-material';
 
@@ -117,26 +124,21 @@ function Accounts() {
         </Button>
       </Box>
 
-      <Grid container spacing={3}>
-        {accounts.map((account) => (
-          <Grid item xs={12} md={6} key={account.accountId}>
-            <Card>
-              <CardContent>
-                <Typography variant="h6">{account.accountId}</Typography>
-                <Typography color="textSecondary" gutterBottom>
-                  Google Sheet ID: {account.googleSheetsId}
-                </Typography>
-                <Box sx={{ mt: 1 }}>
-                  {account.sources.map((source) => (
-                    <Chip
-                      key={source}
-                      label={source}
-                      size="small"
-                      sx={{ mr: 1, mb: 1 }}
-                    />
-                  ))}
-                </Box>
-                <Box sx={{ mt: 2 }}>
+      <TableContainer component={Paper}>
+        <Table>
+          <TableHead>
+            <TableRow>
+              <TableCell>Name</TableCell>
+              <TableCell>Company ID</TableCell>
+              <TableCell>Actions</TableCell>
+            </TableRow>
+          </TableHead>
+          <TableBody>
+            {accounts.map((account) => (
+              <TableRow key={account.accountId}>
+                <TableCell>{account.accountId}</TableCell>
+                <TableCell>{account.googleSheetsId}</TableCell>
+                <TableCell>
                   <IconButton
                     size="small"
                     onClick={() => handleOpen(account)}
@@ -150,12 +152,12 @@ function Accounts() {
                   >
                     <DeleteIcon />
                   </IconButton>
-                </Box>
-              </CardContent>
-            </Card>
-          </Grid>
-        ))}
-      </Grid>
+                </TableCell>
+              </TableRow>
+            ))}
+          </TableBody>
+        </Table>
+      </TableContainer>
 
       <Dialog open={open} onClose={handleClose} maxWidth="sm" fullWidth>
         <DialogTitle>
